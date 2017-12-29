@@ -22,50 +22,50 @@ Copyright © 2017 block.one
   - [并发性能](#并发性能)
 - [共识算法DPOS](#共识算法DPOS) 
   - [交易确认](#交易确认)
-  - [股权证明的交易TaPoS](#transaction-as-proof-of-stake--tapos-)
-- [帐户](#accounts) 
-  - [消息 & 处理](#messages---handlers)
-  - [基于角色的权限管理](#role-based-permission-management) 
-    - [命名的权限级别](#named-permission-levels)
-    - [命名的消息处理群组](#named-message-handler-groups)
-    - [权限映射](#permission-mapping)
-    - [评估权限](#evaluating-permissions) 
-      - [默认权限群组](#default-permission-groups)
-      - [权限并行评估](#parallel-evaluation-of-permissions)
-  - [带强制性延时的消息](#messages-with-mandatory-delay)
-  - [恢复被盗窃的密钥](#recovery-from-stolen-keys)
-- [应用程序的确定性并行执行](#deterministic-parallel-execution-of-applications) 
-  - [最小化通信延迟](#minimizing-communication-latency)
-  - [只读信息的处理](#read-only-message-handlers)
-  - [多帐户的原子化交易](#atomic-transactions-with-multiple-accounts)
-  - [区块链状态的部分评估](#partial-evaluation-of-blockchain-state)
-  - [自主最优调度](#subjective-best-effort-scheduling)
-- [Token 模型与资源使用](#token-model-and-resource-usage) 
-  - [客观与主观的度量](#objective-and-subjective-measurements)
-  - [接收方付费](#receiver-pays)
-  - [委托能力](#delegating-capacity)
-  - [分离交易成本与 Token 价值](#separating-transaction-costs-from-token-value)
-  - [状态存储成本](#state-storage-costs)
-  - [区块奖励](#block-rewards)
-  - [社区效益应用](#community-benefit-applications)
-- [治理](#governance) 
-  - [冻结帐户](#freezing-accounts)
-  - [更改帐户代码](#changing-account-code)
-  - [宪法](#constitution)
-  - [升级协议 & 宪法](#upgrading-the-protocol---constitution) 
-    - [紧急变更](#emergency-changes)
-- [脚本 & 虚拟机](#scripts---virtual-machines) 
-  - [模式定义的消息](#schema-defined-messages)
-  - [模式定义的数据库](#schema-defined-database)
-  - [分离授权与应用](#separating-authentication-from-application)
-  - [虚拟机独立架构](#virtual-machine-independent-architecture) 
-    - [Web 组建 (WASM)](#web-assembly)
-    - [以太访虚拟机 (EVM)](#ethereum-virtual-machine--evm-)
-- [跨链通信](#inter-blockchain-communication) 
-  - [用于轻客户端的 Merkle 证明 (LCV)](#merkle-proofs-for-light-client-validation--lcv-)
-  - [跨链通信的延时](#latency-of-interchain-communication)
-  - [完备性证明](#proof-of-completeness)
-- [结论](#conclusion)
+  - [交易股权证明TaPoS](#交易股权证明TaPoS)
+- [帐户](#帐户) 
+  - [消息及处理](#消息及处理)
+  - [基于角色的权限管理](#基于角色的权限管理) 
+    - [命名的权限级别](#命名的权限级别)
+    - [命名的消息处理组](#命名的消息处理组)
+    - [权限映射](#权限映射)
+    - [评估权限](#评估权限) 
+      - [默认权限组](#默认权限组)
+      - [权限并行评估](#权限并行评估)
+  - [可以强制延时的消息](#可以强制延时的消息)
+  - [恢复被盗窃的密钥](#恢复被盗窃的密钥)
+- [应用程序的确定性并行执行](#应用程序的确定性并行执行) 
+  - [最小化通信延迟](#最小化通信延迟)
+  - [只读消息的处理](#只读消息的处理)
+  - [多帐户的原子化交易](#多帐户的原子化交易)
+  - [区块链状态的部分评估](#区块链状态的部分评估)
+  - [自主最优调度](#自主最优调度)
+- [Token模型与资源使用](#Token模型与资源使用) 
+  - [客观和主观度量](#客观和主观度量)
+  - [接收方付费](#接收方付费)
+  - [委托能力](#委托能力)
+  - [分离交易成本与Token价值](#分离交易成本与Token价值)
+  - [状态存储成本](#状态存储成本)
+  - [区块奖励](#区块奖励)
+  - [社区效益应用](#社区效益应用)
+- [治理](#治理) 
+  - [冻结帐户](#冻结帐户)
+  - [更改帐户代码](#更改帐户代码)
+  - [宪法](#宪法)
+  - [升级协议和宪法](#升级协议和宪法) 
+    - [紧急变更](#紧急变更)
+- [脚本和虚拟机](#脚本和虚拟机) 
+  - [模式定义消息](#模式定义消息)
+  - [模式定义数据库](#模式定义数据库)
+  - [分离授权与应用](#分离授权与应用)
+  - [虚拟机独立架构](#虚拟机独立架构) 
+    - [Web组建](#Web组建)
+    - [以太访虚拟机EVM](#以太访虚拟机EVM)
+- [跨链通信](#跨链通信) 
+  - [用于轻客户端的Merkle证明](#用于轻客户端的Merkle证明)
+  - [跨链通信的延时](#跨链通信的延时)
+  - [完备性证明](#完备性证明)
+- [结论](#结论)
 
 # 背景
 
@@ -87,7 +87,7 @@ Copyright © 2017 block.one
 
 Application developers need the flexibility to offer users free services; users should not have to pay in order to use the platform or benefit from its services. 一个可以免费供用户使用的区块链平台或许将赢得更为广泛的使用。 开发者和企业可以制订有效的货币化战略。
 
-## 简单升级和 bug 修复
+## 简单升级和bug修复
 
 企业构建区块链基础的应用需要能够为应用增加新特性的灵活性。
 
@@ -127,7 +127,7 @@ EOS.IO 软件使得区块准确的每 3 秒生成一个并且在任何时间点�
 
 对于这种警告的反应完全取决于商业交易的性质，但最简单的做法就是等待 15/21 的确认直到警告消失。
 
-## 股权证明的交易TaPoS
+## 交易股权证明TaPoS
 
 EOS.IO 软件需要每一个交易包含最近一个区块头的哈希值。这个哈希值有两个目的：
 
@@ -142,7 +142,7 @@ EOS.IO 软件允许所有的帐户使用一个唯一的人类可读的名称来�
 
 在一个去中心化的场景中，应用开发者将会为新用户注册成本买单。 Traditional businesses already spend significant sums of money per customer they acquire in the form of advertising, free services, etc. 比起来，资助一个新的区块链帐户的花费简直微不足道。 值得庆幸的是，对一个已经在另一个应用注册过的用户并不需要再创建新的帐户。
 
-## 消息 & 处理
+## 消息及处理
 
 每个帐户可以发送结构化的消息给其他的帐户，并且可以定义脚本来处理他们接收到的消息。 EOS.IO 软件给每个帐户提供了只有自己的消息处理脚本能访问的私有数据库。 消息处理脚本同样可以给其他帐户发送消息。 消息和自动化的消息处理的结合决定了 EOS.IO 如何定义智能合约的。
 
@@ -196,7 +196,7 @@ The EOS.IO technology also allows all accounts to have an "owner" group which ca
 
 当从消息日志中重新生成确定性状态时不再需要重复的权限验证。 事实是一个交易如果被包含近了一个被认为不存在问题的区块时它就有足够的理由跳过这 步这将极大减少因为区块链增长拉去过去记录时的计算量。
 
-## 带强制性延时的消息
+## 可以强制延时的消息
 
 时间是安全中的一个关键组成部分。 在大多数情况下，一个私钥在没有被使用前都无从知晓它是否被偷窃。 当人们有需要密钥的应用在每天联网使用的电脑上运行时，基于时间的安全会更为重要。 EOS.IO 软件让应用开发者可以指明消息必须在被加到一个区块之前等待最小的时间间隙。 During this time they can be cancelled.
 
@@ -273,7 +273,7 @@ On a launched blockchain adopting the EOS.IO software, at a network level all tr
 
 这种对计算成本的主观评估将区块链从必须精确和确定的预测一些东西要花多长时间来运行这一问题中解放出来。 有了这一设计就不需要精确的数指令，将极大的增加优化的可能性又不必打破共识。
 
-# Token 模型与资源使用
+# Token模型与资源使用
 
 **PLEASE NOTE: CRYPTOGRAPHIC TOKENS REFERRED TO IN THIS WHITE PAPER REFER TO CRYPTOGRAPHIC TOKENS ON A LAUNCHED BLOCKCHAIN THAT ADOPTS THE EOS.IO SOFTWARE. THEY DO NOT REFER TO THE ERC-20 COMPATIBLE TOKENS BEING DISTRIBUTED ON THE ETHEREUM BLOCKCHAIN IN CONNECTION WITH THE EOS TOKEN DISTRIBUTION.**
 
@@ -293,7 +293,7 @@ All blockchains are resource constrained and require a system to prevent abuse. 
 
 Adopting the EOS.IO software on a launched blockchain means bandwidth and computational capacity are allocated on a fractional reserve basis because they are transient (unused capacity cannot be saved for future use). The algorithm used by EOS.IO software is similar to the algorithm used by Steem to rate-limit bandwidth usage.
 
-## 客观与主观的度量
+## 客观和主观度量
 
 如前所述，检测计算使用的性能和优化的影响很大；因此，所有资源的使用限制，最终都是主观的，执行依靠个人的算法和区块生产者进行估计。
 
@@ -309,7 +309,7 @@ A launched blockchain that uses the EOS.IO software does not require its users t
 
 A holder of tokens on a blockchain launched adopting the EOS.IO software who may not have an immediate need to consume all or part of the available bandwidth, can give or rent such unconsumed bandwidth to others; the block producers running EOS.IO software on such blockchain will recognize this delegation of capacity and allocate bandwidth accordingly.
 
-## 分离交易成本与 Token 价值
+## 分离交易成本与Token价值
 
 EOS.IO 软件的一个主要优点就是应用可用的带宽完全独立于 token 的价格。 If an application owner holds a relevant number of tokens on a blockchain adopting EOS.IO software, then the application can run indefinitely within a fixed state and bandwidth usage. In such case, developers and users are unaffected from any price volatility in the token market and therefore not reliant on a price feed. In other words, a blockchain that adopts the EOS.IO software enables block producers to naturally increase bandwidth, computation, and storage available per token independent of the token's value.
 
@@ -353,7 +353,7 @@ EOS.IO 应用使得区块链创建了一个点对点的服务条款协议或者�
 
 宪法还定义了人类可读意图的源代码协议。 这个意图是用来识别错误和功能之间的差异，当错误发生时，引导社区对什么是适当或不当修复。
 
-## 升级协议 & 宪法
+## 升级协议和宪法
 
 The EOS.IO software defines a process by which the protocol as defined by the canonical source code and its constitution, can be updated using the following process:
 
@@ -371,7 +371,7 @@ The EOS.IO software defines a process by which the protocol as defined by the ca
 
 区块生产者可以推荐软件的变更当 bug 是伤害性 bug 或安全溢出影响用户使用的。 一般来说，这可能是对宪法的加速更新，引进新的功能或修复无害的错误。
 
-# 脚本 & 虚拟机
+# 脚本和虚拟机
 
 EOS.IO 首先会是一个平台用于协同用户间认证消息的传递。 脚本语言和虚拟机的具体实现与 EOS.IO 技术的设计是分离的。 任何语言或者虚拟主机，只要确定并适合沙盒，带有足够的运行效率均可以和 EOS.IO 软件 API 对接。
 
@@ -399,13 +399,13 @@ To maximize parallelization opportunities and minimize the computational debt as
 
 It is the intention of the EOS.IO software-based blockchain that multiple virtual machines can be supported and new virtual machines added over time as necessary. 因此，本文并不讨论任何特定的语言或者虚拟机。 That said, there are two virtual machines that are currently being evaluated for use with an EOS.IO software-based blockchain.
 
-### Web 组建 (WASM)
+### Web组建
 
 网络组建是一种为了构建高性能的 web 应用而新兴的 web 标准。 只需要进行少量的更改 Web 组建就可以被制作为确定性的和沙盒化的。 Web 组建的好处是它有着广泛的产业支持并且它可以让智能合约使用熟知的语言进行开发，比如 C 或 C++。
 
 以太访开发者已经开始更改 Web 组建来提供合适的沙盒与确定性在他们的[以太访式 Web 组建 (WASM)](https://github.com/ewasm/design)。 这种方式让 EOS.IO 很容易的与之适配和对接。
 
-### 以太访虚拟机 (EVM)
+### 以太访虚拟机EVM
 
 这个虚拟机已经被众多已有的智能合约所采用并且可以通过适配应用与 EOS.IO 区块链中。 It is conceivable that EVM contracts could be run within their own sandbox inside an EOS.IO software-based blockchain and that with some adaptation EVM contracts could communicate with other EOS.IO software blockchain applications.
 
@@ -415,7 +415,7 @@ EOS.IO 软件被设计为跨区块链通信友好的。 这是通过生成消息
 
 <img align="right" src="http://eos.io/wpimg/Diagram1.jpg" width="362.84px" height="500px" />
 
-## 用于轻客户端的 Merkle 证明 (LCV)
+## 用于轻客户端的Merkle证明
 
 如果客户端不需要处理所有的交易会让多区块链间的整合更为轻松。 毕竟，一个交易所只需要关心交易所的入账和出账，别无他求。 如果交易所链条可以使用资金的轻量 merkle 证明，而不必非要完全依赖对它区块生产者的信任会是一个不错的主意。 至少一个链的区块生产者在与其他区块链同步时更乐意保持尽可能小的开销。
 
