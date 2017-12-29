@@ -12,17 +12,17 @@ Copyright © 2017 block.one
 
 **免责声明：** 本 EOS.IO 技术白皮书草案仅供参考。 block.one does not guarantee the accuracy of or the conclusions reached in this white paper, and this white paper is provided “as is”. block.one does not make and expressly disclaims all representations and warranties, express, implied, statutory or otherwise, whatsoever, including, but not limited to: (i) warranties of merchantability, fitness for a particular purpose, suitability, usage, title or noninfringement; (ii) that the contents of this white paper are free from error; and (iii) that such contents will not infringe third-party rights. block.one and its affiliates shall have no liability for damages of any kind arising out of the use, reference to, or reliance on this white paper or any of the content contained herein, even if advised of the possibility of such damages. In no event will block.one or its affiliates be liable to any person or entity for any damages, losses, liabilities, costs or expenses of any kind, whether direct or indirect, consequential, compensatory, incidental, actual, exemplary, punitive or special for the use of, reference to, or reliance on this white paper or any of the content contained herein, including, without limitation, any loss of business, revenues, profits, data, use, goodwill or other intangible losses.
 
-- [背景](#background)
-- [区块链应用的要求](#requirements-for-blockchain-applications) 
-  - [支持成百上千的用户](#support-millions-of-users)
-  - [免费的使用](#free-usage)
-  - [简单升级和 bug 修复](#easy-upgrades-and-bug-recovery)
-  - [低延时](#low-latency)
-  - [时序性能](#sequential-performance)
-  - [并发性能](#parallel-performance)
-- [共识算法 (DPOS)](#consensus-algorithm--dpos-) 
-  - [交易确认](#transaction-confirmation)
-  - [股权证明的交易 (TaPoS)](#transaction-as-proof-of-stake--tapos-)
+- [背景](#背景)
+- [区块链应用的要求](#区块链应用的要求) 
+  - [支持百万级别用户](#支持百万级别用户)
+  - [免费使用](#免费使用)
+  - [简单升级和bug修复](#简单升级和bug修复)
+  - [低延时](#低延时)
+  - [时序性能](#时序性能)
+  - [并发性能](#并发性能)
+- [共识算法DPOS](#共识算法DPOS) 
+  - [交易确认](#交易确认)
+  - [股权证明的交易TaPoS](#transaction-as-proof-of-stake--tapos-)
 - [帐户](#accounts) 
   - [消息 & 处理](#messages---handlers)
   - [基于角色的权限管理](#role-based-permission-management) 
@@ -79,7 +79,7 @@ Copyright © 2017 block.one
 
 为了赢得广泛的应用，构建在区块链之上的应用需要一个灵活性足以满足以下要求的平台：
 
-## 支持成百上千的用户
+## 支持百万级别用户
 
 像 Ebay、Uber、AirBnB 和 Facebook 这样企业，他们需要区块链技术能处理每日数以千万的活跃用户。 在某些情况下，除非用户群体达到一个极庞大的量级否则应用并无用武之地，因此一个可以处理极其庞大用户的平台是至关重要的。
 
@@ -105,7 +105,7 @@ Application developers need the flexibility to offer users free services; users 
 
 大型可扩展应用需要将工作量分配到多 CPU 和计算机之上。
 
-# 共识算法 (DPOS)
+# 共识算法DPOS
 
 EOS.IO 软件使用唯一能满足区块链之上应用性能需求的去中心化共识算法，[委托股权证明 (DPOS)](https://steemit.com/dpos/@dantheman/dpos-consensus-algorithm-this-missing-white-paper)。 Under this algorithm, those who hold tokens on a blockchain adopting the EOS.IO software may select block producers through a continuous approval voting system and anyone may choose to participate in block production and will be given an opportunity to produce blocks proportional to the total votes they have received relative to all other producers. For private blockchains the management could use the tokens to add and remove IT staff.
 
@@ -127,7 +127,7 @@ EOS.IO 软件使得区块准确的每 3 秒生成一个并且在任何时间点�
 
 对于这种警告的反应完全取决于商业交易的性质，但最简单的做法就是等待 15/21 的确认直到警告消失。
 
-## 股权证明的交易 (TaPoS)
+## 股权证明的交易TaPoS
 
 EOS.IO 软件需要每一个交易包含最近一个区块头的哈希值。这个哈希值有两个目的：
 
